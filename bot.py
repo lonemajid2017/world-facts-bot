@@ -39,7 +39,6 @@ def generate_tweet():
     """
     
     try:
-        # Google Search Grounding ke saath 100% live fact verification
         response = client.models.generate_content(
             model="gemini-2.5-flash",
             contents=prompt,
@@ -75,4 +74,3 @@ def post_tweet():
 
 if __name__ == "__main__":
     post_tweet()
-  
