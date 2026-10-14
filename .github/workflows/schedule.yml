@@ -1,0 +1,40 @@
+name: Daily Global Facts Bot
+
+on:
+  schedule:
+    - cron: '30 0 * * *'   # 6:00 AM IST (Subah 6 baje)
+    - cron: '30 2 * * *'   # 8:00 AM IST (Subah 8 baje)
+    - cron: '30 4 * * *'   # 10:00 AM IST (Subah 10 baje)
+    - cron: '30 6 * * *'   # 12:00 PM IST (Dopahar 12 baje)
+    - cron: '30 8 * * *'   # 2:00 PM IST (Dopahar 2 baje)
+    - cron: '30 10 * * *'  # 4:00 PM IST (Shaam 4 baje)
+    - cron: '30 12 * * *'  # 6:00 PM IST (Shaam 6 baje)
+    - cron: '30 17 * * *'  # 11:00 PM IST (Raat 11 baje)
+    - cron: '30 20 * * *'  # 2:00 AM IST (Raat 2 baje)
+    - cron: '30 22 * * *'  # 4:00 AM IST (Subah 4 baje)
+  workflow_dispatch:
+
+jobs:
+  post-fact:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Libraries
+        run: pip install -r requirements.txt
+
+      - name: Generate and Post Tweet
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
+          TWITTER_API_SECRET: ${{ secrets.TWITTER_API_SECRET }}
+          TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+          TWITTER_ACCESS_SECRET: ${{ secrets.TWITTER_ACCESS_SECRET }}
+        run: python bot.py
+        
